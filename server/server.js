@@ -1,3 +1,4 @@
+require('dotenv').config()
 var express = require('express');
 var graphqlHTTP = require('express-graphql');
 const { makeExecutableSchema } = require('graphql-tools')

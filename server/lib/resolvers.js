@@ -1,27 +1,21 @@
 
-const states =  [
-  {
-    _id: 'xxxx',
-    title: "Prueba",
-    price: "20000",
-    photos: [],
-    options: [],
-    date_disp: []
-  },
-  {
-    _id: 'xxxxy',
-    title: "Prueba",
-    price: "20000",
-    photos: [],
-    options: [],
-    date_disp: []
-  }
-]
+const connectDb = require('./db')
 
 module.exports = {
   Query: {
-    getRealStates: () => {
+    getRealStates: async() => {
+      let db, states = []
+      try{
+        db = await connectDb()
+        states = await db.collection('real_states').find().toArray()
+      }catch(error){
+        console.error(error)
+      }
       return states
+    },
+    getRealState: (root, args) => {
+      const state = states.filter(x => x._id === args.id)
+      return state.pop()
     }
  }
 }
