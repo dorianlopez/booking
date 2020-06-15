@@ -11,6 +11,6 @@ module.exports = {
       }catch(error){
         console.error(error)
       }
-      return state
+      return input
   }
 }
