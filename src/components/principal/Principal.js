@@ -4,6 +4,7 @@ import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "../header/Header";
 import Home from "../home/Home";
 import Publish from "../publish/Publish";
+import Booking from "../booking/Booking";
 
 class Principal extends Component {
   constructor(props) {
@@ -26,6 +27,16 @@ class Principal extends Component {
               path="/publish"
               render={(props) => (
                 <Publish
+                  {...props}
+                  endSession={this.props.endSession}
+                  global={this.state}
+                />
+              )}
+            />
+            <Route
+              path="/booking"
+              render={(props) => (
+                <Booking
                   {...props}
                   endSession={this.props.endSession}
                   global={this.state}

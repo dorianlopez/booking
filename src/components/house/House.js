@@ -7,6 +7,10 @@ class House extends Component {
     this.state = {};
   }
 
+  goToDetail(data) {
+    this.props.detail(data);
+  }
+
   render() {
     return (
       <div style={styles.house_container}>
@@ -18,7 +22,12 @@ class House extends Component {
         </div>
 
         <div style={styles.option_container}>
-          <p style={styles.booking}>Reservar</p>
+          <p
+            onClick={() => this.goToDetail(this.props.data)}
+            style={styles.booking}
+          >
+            Reservar
+          </p>
         </div>
       </div>
     );

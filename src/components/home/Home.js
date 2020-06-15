@@ -11,63 +11,83 @@ class Home extends Component {
       houses: [
         {
           title: "Casa 1",
+          photos: [
+            {
+              url: "home1.jpg",
+            },
+            {
+              url: "home2.jpg",
+            },
+          ],
           photo: "home1.jpg",
           price: "$100.000",
+          data: "Wifi, se permiten mascotas.",
         },
         {
           title: "Casa 2",
           photo: "home2.jpg",
           price: "$250.000",
+          data: "Wifi, se permiten mascotas.",
         },
         {
           title: "Casa 3",
           photo: "home3.jpg",
           price: "$80.000",
+          data: "Wifi, se permiten mascotas.",
         },
         {
           title: "Casa 4",
           photo: "home1.jpg",
           price: "$130.000",
+          data: "Wifi, se permiten mascotas.",
         },
         {
           title: "Casa 5",
           photo: "home2.jpg",
           price: "300.000",
+          data: "Wifi, se permiten mascotas.",
         },
         {
           title: "Casa 3",
           photo: "home3.jpg",
           price: "$80.000",
+          data: "Wifi, se permiten mascotas.",
         },
         {
           title: "Casa 4",
           photo: "home1.jpg",
           price: "$130.000",
+          data: "Wifi, se permiten mascotas.",
         },
         {
           title: "Casa 5",
           photo: "home2.jpg",
           price: "300.000",
+          data: "Wifi, se permiten mascotas.",
         },
         {
           title: "Casa 1",
           photo: "home1.jpg",
           price: "$100.000",
+          data: "Wifi, se permiten mascotas.",
         },
         {
           title: "Casa 2",
           photo: "home2.jpg",
           price: "$250.000",
+          data: "Wifi, se permiten mascotas.",
         },
         {
           title: "Casa 3",
           photo: "home3.jpg",
           price: "$80.000",
+          data: "Wifi, se permiten mascotas.",
         },
         {
           title: "Casa 4",
           photo: "home1.jpg",
           price: "$130.000",
+          data: "Wifi, se permiten mascotas.",
         },
       ],
     };
@@ -76,6 +96,23 @@ class Home extends Component {
   goToPublish() {
     this.props.history.push({
       pathname: "/publish",
+    });
+  }
+
+  goToDetail(info) {
+    let fecha = new Date();
+    let data = {
+      item: info,
+    };
+
+    localStorage.setItem(
+      `DP_${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`,
+      JSON.stringify(data)
+    );
+
+    this.props.history.push({
+      pathname: "/booking",
+      state: data,
     });
   }
 
@@ -100,7 +137,7 @@ class Home extends Component {
         <Row className="show-grid">
           <Col xs={12} md={12} style={styles.houses_container}>
             {this.state.houses.map((item, index) => (
-              <House data={item} />
+              <House data={item} detail={this.goToDetail.bind(this)} />
             ))}
           </Col>
         </Row>

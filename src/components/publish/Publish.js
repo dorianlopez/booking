@@ -151,7 +151,7 @@ class Publish extends Component {
 
         <hr />
 
-        <Row className="show-grid">
+        <Row style={styles.body_container} className="show-grid">
           <Col xs={6} md={6}>
             <h5 style={styles.subtitle}>Información de la vivienda</h5>
 
@@ -273,6 +273,9 @@ const styles = {
     display: "flex",
     alignItems: "center",
     margin: 0,
+  },
+  body_container: {
+    marginTop: 30,
   },
   subtitle: {
     marginBottom: 25,
