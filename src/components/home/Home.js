@@ -73,7 +73,11 @@ class Home extends Component {
     };
   }
 
-  goToPublish() {}
+  goToPublish() {
+    this.props.history.push({
+      pathname: "/publish",
+    });
+  }
 
   render() {
     return (
@@ -108,7 +112,7 @@ class Home extends Component {
 const styles = {
   container: {
     height: "100%",
-    padding: "25px 15px 25px 35px",
+    padding: "25px 15px",
     margin: "0px 8%",
   },
   header: {
