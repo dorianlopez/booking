@@ -21,5 +21,15 @@ module.exports = {
       console.error(error)
     }
     return state
+  },
+  getOptions: async () => {
+    let db, options = []
+    try{
+      db = await connectDb()
+      options = await db.collection('option').find().toArray()
+    }catch(error){
+      console.error(error)
+    }
+    return options
   }
 }

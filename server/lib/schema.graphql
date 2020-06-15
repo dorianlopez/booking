@@ -25,6 +25,8 @@ type Query {
   getRealStates: [RealState]
   "Devuelve una propiedad"
   getRealState(id:ID!): RealState
+  "Devuelve las opciones"
+  getOptions:[Option]
 }
 
 input RealStateInput {

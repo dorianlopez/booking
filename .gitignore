@@ -6,7 +6,6 @@
 .pnp.js
 .env
 /server/resources
-/server/lib/resources
 
 # testing
 /coverage
