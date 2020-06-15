@@ -10,6 +10,7 @@ import {
   Card,
 } from "react-bootstrap";
 
+import BackgroundImage from "../../assets/images/background2.jpg";
 import ModalMessage from "../commons/ModalMessage";
 import Loader from "../commons/Loader";
 
@@ -80,7 +81,14 @@ class SignUp extends Component {
   render() {
     return (
       <div>
-        <div style={styles.container}>
+        <div
+          style={{
+            backgroundImage: `url(${BackgroundImage}`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            height: "100%",
+          }}
+        >
           <Container>
             <Row className="justify-content-md-center">
               <Col xs={10} md={5}>

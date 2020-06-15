@@ -10,9 +10,9 @@ import {
   Card,
 } from "react-bootstrap";
 
+import BackgroundImage from "../../assets/images/background2.jpg";
 import { DATA_SESSION } from "../../config/global";
 import { wrap, getTag, unwrap } from "../../utils/Utils";
-import { Link } from "react-router-dom";
 
 import ModalMessage from "../commons/ModalMessage";
 import Loader from "../commons/Loader";
@@ -113,7 +113,14 @@ class Login extends Component {
           this.state.showSignUp ? (
             <SignUp back={this.hideSignUpForm.bind(this)} />
           ) : (
-            <div style={styles.container}>
+            <div
+              style={{
+                backgroundImage: `url(${BackgroundImage}`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                height: "100%",
+              }}
+            >
               <Container>
                 <Row className="justify-content-md-center">
                   <Col xs={10} md={5}>
