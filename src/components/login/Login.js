@@ -110,17 +110,17 @@ class Login extends Component {
     return (
       <div>
         {!this.state.is_loggin ? (
-          this.state.showSignUp ? (
-            <SignUp back={this.hideSignUpForm.bind(this)} />
-          ) : (
-            <div
-              style={{
-                backgroundImage: `url(${BackgroundImage}`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                height: "100%",
-              }}
-            >
+          <div
+            style={{
+              backgroundImage: `url(${BackgroundImage}`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              height: "100%",
+            }}
+          >
+            {this.state.showSignUp ? (
+              <SignUp back={this.hideSignUpForm.bind(this)} />
+            ) : (
               <Container>
                 <Row className="justify-content-md-center">
                   <Col xs={10} md={5}>
@@ -250,8 +250,8 @@ class Login extends Component {
 
                 {this.state.showLoader && <Loader />}
               </Container>
-            </div>
-          )
+            )}
+          </div>
         ) : (
           <Principal
             endSession={this.endSession.bind(this)}
