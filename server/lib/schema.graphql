@@ -1,0 +1,27 @@
+type RealState {
+  _id: ID
+  title: String
+  price: String
+  photos: [Photo]
+  options: [Option]
+  date_disp: [Disponibility]
+}
+
+type Photo {
+  _id: String,
+  url_foto: String
+}
+
+type Option {
+  _id: String,
+  name: String
+}
+
+type Disponibility {
+  date: String
+}
+
+type Query {
+  "Devuelve todas las propiedades raices"
+  getRealStates: [RealState]
+}
