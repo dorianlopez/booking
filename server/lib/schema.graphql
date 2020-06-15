@@ -27,3 +27,16 @@ type Query {
   "Devuelve una propiedad"
   getRealState(id:ID!): RealState
 }
+
+input RealStateInput {
+  title: String!
+  price: String
+  photos: [Photo]
+  options: [Option]
+  date_disp: [Disponibility]
+}
+
+type Mutation {
+  "Crea una propiedad"
+  createRealState(input: RealStateInput!): RealState
+}
