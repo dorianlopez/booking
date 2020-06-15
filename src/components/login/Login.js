@@ -10,7 +10,7 @@ import {
   Card,
 } from "react-bootstrap";
 
-import BackgroundImage from "../../assets/images/background2.jpg";
+import BackgroundImage from "../../assets/images/fondo.jpg";
 import { DATA_SESSION } from "../../config/global";
 import { wrap, getTag, unwrap } from "../../utils/Utils";
 
@@ -47,13 +47,10 @@ class Login extends Component {
         us_log: this.state.user,
         secret: this.state.pass,
       };
-      console.log("Entra");
 
       let tag = getTag();
       let dev_session = wrap(JSON.stringify(params), tag);
       localStorage.setItem(DATA_SESSION, dev_session);
-
-      console.log("TAG: ", tag);
       let ss = this.validateSession();
     } else {
       this.setState({
@@ -66,7 +63,6 @@ class Login extends Component {
   }
 
   validateSession() {
-    console.log("Entra validate session");
     let session = localStorage.getItem(DATA_SESSION);
     let obj = [];
 
@@ -132,7 +128,7 @@ class Login extends Component {
                       >
                         <Card.Body>
                           <Card.Title style={styles.card_title}>
-                            <h3>Booking</h3>
+                            <h3>Iniciar Sesión</h3>
                           </Card.Title>
                           <Card.Text>
                             <Form
