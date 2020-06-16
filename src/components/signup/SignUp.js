@@ -13,6 +13,17 @@ import {
 import BackgroundImage from "../../assets/images/background2.jpg";
 import ModalMessage from "../commons/ModalMessage";
 import Loader from "../commons/Loader";
+import gql from 'graphql-tag';
+import { Mutation } from '@apollo/react-components';
+
+const SIGNUP = gql`
+  mutation signUp($input: UserInput) {
+    signUp(input: $input ) {
+      status,
+      message
+    }
+  }
+`;
 
 class SignUp extends Component {
   constructor(props) {
@@ -27,8 +38,8 @@ class SignUp extends Component {
     };
   }
 
-  handleClick(e) {
-    e.preventDefault();
+  handleClick(toExec) {
+    
     this.setState({ showLoader: true });
 
     if (
@@ -47,11 +58,11 @@ class SignUp extends Component {
       } else {
         this.setState({ registry: true });
         let params = {
-          name: this.state.user,
+          name: this.state.name,
           email: this.state.email,
-          pass: this.state.password,
-          c_pass: this.state.confirmPassword,
+          passwd: this.state.password
         };
+        toExec({ variables: {input:params}});
 
         this.setState({
           showLoader: false,
@@ -79,6 +90,7 @@ class SignUp extends Component {
   }
 
   render() {
+    let input;
     return (
       <div>
         <Container>
@@ -95,10 +107,15 @@ class SignUp extends Component {
                       <h3>Registro</h3>
                     </Card.Title>
                     <Card.Text>
+                    <Mutation mutation={SIGNUP}>
+                    {(signUp, { data }) => (
                       <Form
                         horizontal
                         style={styles.form_container}
-                        onSubmit={this.handleClick.bind(this)}
+                        onSubmit={e=>{
+                          e.preventDefault();
+                          this.handleClick(signUp)
+                        }}
                       >
                         <Form.Group controlId="formGroupEmail">
                           <InputGroup className="mb-3">
@@ -254,6 +271,8 @@ class SignUp extends Component {
                           </Button>
                         </div>
                       </Form>
+                         )}
+                      </Mutation>
 
                       <div style={styles.center}>
                         <p

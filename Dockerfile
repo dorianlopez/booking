@@ -17,4 +17,5 @@ RUN npm install
 COPY . ./
 
 # start app
+#RUN node server/server.js
 CMD ["npm", "start"]

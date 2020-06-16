@@ -67,11 +67,18 @@ input UserInput{
   passwd: String!
 }
 
-
+input BookingInput{
+  email: String!
+  date: String!
+  id_real_state: String!
+  title: String!
+}
 
 type Mutation {
   "Crea una propiedad"
   createRealState(input: RealStateInput!): RealState
   "Registrar usuario"
   signUp(input:UserInput): RspAPI
+  "Agregar reservar"
+  addBooking(input:BookingInput!): RspAPI
 }

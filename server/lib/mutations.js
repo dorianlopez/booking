@@ -61,5 +61,22 @@ module.exports = {
         console.error(error)
       }
       return {status, message}
+  },
+  addBooking: async(root, {input}) => {
+    let db, state = []
+    let status = false
+    let message = ''
+      try{
+        db = await connectDb()
+        state = await db.collection('booking').insertOne(input)
+        if(state.insertedId !== null){
+          status = true
+          utils.sendEmailBooking(input.email,input.date,input.title)
+        }
+        message = (state.insertedId !== null) ? 'La información se guardo correctamente' : 'Problemas al guardar'
+      }catch(error){
+        console.error(error)
+      }
+      return {status, message}
   }
 }

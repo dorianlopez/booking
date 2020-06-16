@@ -6,11 +6,11 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "bcrypt-nodejs": "0.0.3",
     "apollo-boost": "^0.4.9",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link-http": "^1.5.17",
+    "bcrypt-nodejs": "0.0.3",
     "bootstrap": "^4.5.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
@@ -21,6 +21,7 @@
     "graphql-tag": "^2.10.3",
     "graphql-tools": "^6.0.9",
     "mongo": "^0.1.0",
+    "nodemailer": "^6.4.8",
     "nodemon": "^2.0.4",
     "react": "^16.13.1",
     "react-apollo": "^3.1.5",
@@ -32,11 +33,12 @@
     "uniqid": "^5.2.0"
   },
   "scripts": {
-    "start": "react-scripts start && node server/server",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "nodemon -e js,graphql server/server"
+    "dev": "nodemon -e js,graphql server/server",
+    "server": "node server/server.js"
   },
   "eslintConfig": {
     "extends": "react-app"

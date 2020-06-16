@@ -20,6 +20,17 @@ import ModalMessage from "../commons/ModalMessage";
 import Loader from "../commons/Loader";
 import Principal from "../principal/Principal";
 import SignUp from "../signup/SignUp";
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+
+const SIGNIN = gql`
+  {
+    User {
+      email
+      name
+    }
+  }
+`;
 
 class Login extends Component {
   constructor(props) {
