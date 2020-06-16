@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
-
 import House from "../house/House";
 
 class Home extends Component {
@@ -100,20 +99,21 @@ class Home extends Component {
   }
 
   goToDetail(info) {
-    let fecha = new Date();
-    let data = {
-      item: info,
-    };
+    console.log(info);
+    // let fecha = new Date();
+    // let data = {
+    //   item: info,
+    // };
 
-    localStorage.setItem(
-      `DP_${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`,
-      JSON.stringify(data)
-    );
+    // localStorage.setItem(
+    //   `DP_${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`,
+    //   JSON.stringify(data)
+    // );
 
-    this.props.history.push({
-      pathname: "/booking",
-      state: data,
-    });
+    // this.props.history.push({
+    //   pathname: "/booking",
+    //   state: data,
+    // });
   }
 
   render() {
@@ -136,9 +136,7 @@ class Home extends Component {
 
         <Row className="show-grid">
           <Col xs={12} md={12} style={styles.houses_container}>
-            {this.state.houses.map((item, index) => (
-              <House data={item} detail={this.goToDetail.bind(this)} />
-            ))}
+            <House detail={this.goToDetail.bind(this)} />
           </Col>
         </Row>
       </div>
