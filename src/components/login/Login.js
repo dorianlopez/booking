@@ -10,6 +10,8 @@ import {
   Card,
 } from "react-bootstrap";
 
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
 import BackgroundImage from "../../assets/images/fondo.jpg";
 import { DATA_SESSION } from "../../config/global";
 import { wrap, getTag, unwrap } from "../../utils/Utils";
@@ -103,6 +105,25 @@ class Login extends Component {
   }
 
   render() {
+    const GET_LOGIN = gql`
+      {
+        signIn(email: "${this.state.user}", passwd: "${this.state.pass}") {
+          _id
+          title
+          price
+          options {
+            name
+          }
+          photos {
+            url_foto
+          }
+          date_disp {
+            date
+          }
+        }
+      }
+    `;
+
     return (
       <div>
         {!this.state.is_loggin ? (

@@ -1,18 +1,57 @@
 import React, { Component, useCallback, useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { useDropzone } from "react-dropzone";
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
+import { useMutation } from "@apollo/react-hooks";
+import { Mutation } from "react-apollo";
 
 import ModalMessage from "../commons/ModalMessage";
 import Loader from "../commons/Loader";
+
+const GET_OPTIONS = gql`
+  {
+    getOptions {
+      name
+    }
+  }
+`;
+
+const ADD_TODO = gql`
+  mutation createRealState(
+    $title: String
+    $price: String
+    $photos: [Photo]
+    $options: [Option]
+    $date_disp: [Disponibility]
+  ) {
+    createRealState(
+      title: $title
+      price: $price
+      photos: $photos
+      options: $options
+      date_disp: $date_disp
+    ) {
+      title
+    }
+  }
+`;
 
 class Publish extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      input: {},
+      title: "",
+      price: "",
+      photos: [],
       fotos: [],
+      options: [],
+      date: [],
       cantidad: 0,
       showModal: false,
       showLoader: false,
+      ready: false,
     };
   }
 
@@ -27,13 +66,50 @@ class Publish extends Component {
     this.setState({ fotos: arr, cantidad: arr.length });
   }
 
+  addOption(data) {
+    let options = this.state.options;
+    let option = { name: data };
+
+    options.push(option);
+    this.setState(options);
+    console.log(options);
+  }
+
+  closeModal() {
+    this.setState({ showModal: false });
+  }
+
   render() {
+    const { title, price, options, photos, date } = this.state;
+
+    const OptionsQuery = () => {
+      return (
+        <Query query={GET_OPTIONS}>
+          {({ loading, error, data }) => {
+            if (loading) return <Loader />;
+            if (error) return <p>{`Error: ${error}`}</p>;
+
+            return data.getOptions.map((data) => (
+              <Form.Group controlId="formBasicCheckbox">
+                <Form.Check
+                  type="checkbox"
+                  label={data.name}
+                  onChange={() => this.addOption(data.name)}
+                />
+              </Form.Group>
+            ));
+          }}
+        </Query>
+      );
+    };
+
     const MyDropzone = () => {
       const maxSize = 5242880;
       const [files, setFiles] = useState([]);
 
       const onDrop = useCallback((acceptedFiles) => {
         let data = this.state.fotos;
+        let photos = this.state.photos;
         let cantidad = this.state.cantidad + acceptedFiles.length;
         let file = "";
 
@@ -41,13 +117,14 @@ class Publish extends Component {
           cantidad: cantidad,
         });
 
-        if (this.state.cantidad > 5) {
+        if (this.state.cantidad > 4) {
           this.setState({
             cantidad: 0,
             showLoader: false,
             showModal: true,
             typeModal: "error",
-            msjModal: "Solo es permitido cargar hasta 5 fotos de tu propiedad.",
+            msjModal:
+              "Solo es permitido cargar maximo 4 fotos de tu propiedad.",
           });
         } else {
           setFiles(
@@ -66,6 +143,9 @@ class Publish extends Component {
               Object.assign(file, {
                 base64: event.target.result,
               });
+
+              let obj = { url_foto: event.target.result };
+              photos.push(obj);
             };
 
             data.push(file);
@@ -74,6 +154,7 @@ class Publish extends Component {
 
           this.setState({
             fotos: data,
+            photos,
           });
         }
       }, []);
@@ -102,7 +183,7 @@ class Publish extends Component {
                   style={styles.icon_label_input_drop_fotos}
                   className="icon_foto"
                 ></span>
-                Haz clic aquí o arrastra tus fotos
+                Haz clic aquí o arrastra la foto de tu vivienda
               </p>
             )}
             {isDragActive && !isDragReject && (
@@ -158,12 +239,20 @@ class Publish extends Component {
             <Form style={styles.form}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Título:</Form.Label>
-                <Form.Control type="text" />
+                <Form.Control
+                  type="text"
+                  value={this.state.title}
+                  onChange={(e) => this.setState({ title: e.target.value })}
+                />
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Precio:</Form.Label>
-                <Form.Control type="text" />
+                <Form.Control
+                  type="text"
+                  value={this.state.price}
+                  onChange={(e) => this.setState({ price: e.target.value })}
+                />
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword">
@@ -180,11 +269,28 @@ class Publish extends Component {
 
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Adicionales:</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder={"Wifi, Mascotas, Pareja"}
-                />
+                <div style={styles.options_container}>
+                  <OptionsQuery />
+                </div>
               </Form.Group>
+
+              <Col style={styles.button_container}>
+                <Mutation
+                  mutation={ADD_TODO}
+                  variables={{ title, price, options, photos, date }}
+                >
+                  {(addTodo) => (
+                    <Button
+                      type="submit"
+                      style={styles.publish_button}
+                      variant="info"
+                      onClick={addTodo}
+                    >
+                      Publicar
+                    </Button>
+                  )}
+                </Mutation>
+              </Col>
             </Form>
           </Col>
 
@@ -233,12 +339,6 @@ class Publish extends Component {
                 </div>
               </div>
             )}
-          </Col>
-
-          <Col style={styles.button_container} xs={12} md={12}>
-            <Button style={styles.publish_button} variant="info">
-              Publicar
-            </Button>
           </Col>
         </Row>
 
@@ -289,6 +389,12 @@ const styles = {
   },
   date: {
     width: "47%",
+  },
+  options_container: {
+    display: "flex",
+    width: "50%",
+    justifyContent: "space-between",
+    marginTop: 5,
   },
   fotos_container: {
     width: "90%",
@@ -360,9 +466,8 @@ const styles = {
   },
   button_container: {
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
     marginTop: 35,
+    padding: 0,
   },
   publish_button: {
     padding: "10px 50px",
