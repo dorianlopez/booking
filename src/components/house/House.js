@@ -3,26 +3,6 @@ import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import Loader from "../commons/Loader";
 
-const GET_STATES = gql`
-  {
-    getRealStates {
-      _id
-      title
-      price
-      options {
-        name
-      }
-      price
-      photos {
-        url_foto
-      }
-      date_disp {
-        date
-      }
-    }
-  }
-`;
-
 class House extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +14,25 @@ class House extends Component {
   }
 
   render() {
+    const GET_STATES = gql`
+      {
+        getRealStates {
+          _id
+          title
+          price
+          options {
+            name
+          }
+          photos {
+            url_foto
+          }
+          date_disp {
+            date
+          }
+        }
+      }
+    `;
+
     const StatesQuery = () => {
       return (
         <Query query={GET_STATES}>

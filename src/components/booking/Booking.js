@@ -1,6 +1,8 @@
 import React, { Component, useCallback, useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
 import ModalMessage from "../commons/ModalMessage";
 import Loader from "../commons/Loader";
 
@@ -20,9 +22,7 @@ class Booking extends Component {
     }
 
     this.state = {
-      data: info.item,
-      idx_selected: 0,
-      url_img: info.item.photos[0].url,
+      _id: info.item,
       showModal: false,
       showLoader: false,
     };
@@ -47,6 +47,114 @@ class Booking extends Component {
   }
 
   render() {
+    const GET_STATE = gql`
+      {
+        getRealState(id: "${this.state._id}") {
+          _id
+          title
+          price
+          options {
+            name
+          }
+          photos {
+            url_foto
+          }
+          date_disp {
+            date
+          }
+        }
+      }
+    `;
+
+    const StateQuery = () => {
+      return (
+        <Query query={GET_STATE}>
+          {({ loading, error, data }) => {
+            if (loading) return <Loader />;
+            if (error) return <p>{`Error: ${error}`}</p>;
+
+            const rowLen = data.getRealState.options.length;
+
+            return (
+              <Row style={styles.body_container} className="show-grid">
+                <Col xs={6} md={6}>
+                  <h5 style={styles.subtitle}>Información de la vivienda</h5>
+
+                  <div style={styles.info_container}>
+                    <div style={styles.info_item_container}>
+                      <label style={styles.label}>
+                        Título de la vivienda:{" "}
+                      </label>
+                      <label style={styles.text}>
+                        {data.getRealState.title}
+                      </label>
+                    </div>
+
+                    <div style={styles.info_item_container}>
+                      <label style={styles.label}>Valor de la vivienda: </label>
+                      <label style={styles.text}>
+                        {data.getRealState.price}
+                      </label>
+                    </div>
+
+                    <div style={styles.info_item_container}>
+                      <label style={styles.label}>
+                        Datos adicionales de la vivienda:{" "}
+                      </label>
+                      {data.getRealState.options.map((info, index) => {
+                        if (rowLen === index + 1) {
+                          return (
+                            <label style={styles.text}>{info.name}.</label>
+                          );
+                        } else {
+                          return (
+                            <label style={styles.text}>{info.name}-</label>
+                          );
+                        }
+                      })}
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  <h5 style={styles.subtitle}>
+                    Fecha de la reserva (desde-hasta)
+                  </h5>
+
+                  <Form style={styles.form}>
+                    <Form.Group controlId="formBasicPassword">
+                      <div style={styles.disponibilidad_container}>
+                        <Form.Control
+                          style={styles.date}
+                          type="date"
+                          placesholder={"Desde"}
+                        />
+                        <Form.Control style={styles.date} type="date" />
+                      </div>
+                    </Form.Group>
+
+                    <Button style={styles.publish_button} variant="info">
+                      Reservar
+                    </Button>
+                  </Form>
+                </Col>
+                <Col xs={6} md={6}>
+                  <h5 style={styles.subtitle}>Foto de la vivienda</h5>
+
+                  <div style={styles.image_container}>
+                    <img
+                      style={styles.photo}
+                      src={require(`../../assets/images/home1.jpg`)}
+                    />
+                  </div>
+                </Col>
+              </Row>
+            );
+          }}
+        </Query>
+      );
+    };
+
     return (
       <div style={styles.container}>
         <Row className="show-grid" style={styles.header}>
@@ -78,81 +186,7 @@ class Booking extends Component {
 
         <hr />
 
-        <Row style={styles.body_container} className="show-grid">
-          <Col xs={6} md={6}>
-            <h5 style={styles.subtitle}>Información de la vivienda</h5>
-
-            <div style={styles.info_container}>
-              <div style={styles.info_item_container}>
-                <label style={styles.label}>Título de la vivienda: </label>
-                <label style={styles.text}>{this.state.data.title}</label>
-              </div>
-
-              <div style={styles.info_item_container}>
-                <label style={styles.label}>Valor de la vivienda: </label>
-                <label style={styles.text}>{this.state.data.price}</label>
-              </div>
-
-              <div style={styles.info_item_container}>
-                <label style={styles.label}>
-                  Datos adicionales de la vivienda:{" "}
-                </label>
-                <label style={styles.text}>{this.state.data.data}</label>
-              </div>
-            </div>
-
-            <hr />
-
-            <h5 style={styles.subtitle}>Fecha de la reserva (desde-hasta)</h5>
-
-            <Form style={styles.form}>
-              <Form.Group controlId="formBasicPassword">
-                <div style={styles.disponibilidad_container}>
-                  <Form.Control
-                    style={styles.date}
-                    type="date"
-                    placesholder={"Desde"}
-                  />
-                  <Form.Control style={styles.date} type="date" />
-                </div>
-              </Form.Group>
-
-              <Button style={styles.publish_button} variant="info">
-                Reservar
-              </Button>
-            </Form>
-          </Col>
-          <Col xs={6} md={6}>
-            <h5 style={styles.subtitle}>Fotos de la vivienda</h5>
-
-            <div style={styles.image_container}>
-              <img
-                style={styles.photo}
-                src={require(`../../assets/images/${this.state.url_img}`)}
-              />
-            </div>
-
-            <div style={styles.view_buttons_slider}>
-              <div style={styles.view_container_buttons}>
-                {this.state.data.photos.map((item, index) => (
-                  <div
-                    key={index}
-                    style={styles.view_btn_slider}
-                    onClick={() => {
-                      this.selectedFoto(item, index);
-                    }}
-                  >
-                    {this.state.idx_selected == index ? (
-                      <div style={styles.btn_slider_selected}></div>
-                    ) : (
-                      <div style={styles.btn_slider}></div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Col>
-        </Row>
+        <StateQuery />
 
         {this.state.showModal && (
           <ModalMessage

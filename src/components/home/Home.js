@@ -6,90 +6,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      houses: [
-        {
-          title: "Casa 1",
-          photos: [
-            {
-              url: "home1.jpg",
-            },
-            {
-              url: "home2.jpg",
-            },
-          ],
-          photo: "home1.jpg",
-          price: "$100.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-        {
-          title: "Casa 2",
-          photo: "home2.jpg",
-          price: "$250.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-        {
-          title: "Casa 3",
-          photo: "home3.jpg",
-          price: "$80.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-        {
-          title: "Casa 4",
-          photo: "home1.jpg",
-          price: "$130.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-        {
-          title: "Casa 5",
-          photo: "home2.jpg",
-          price: "300.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-        {
-          title: "Casa 3",
-          photo: "home3.jpg",
-          price: "$80.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-        {
-          title: "Casa 4",
-          photo: "home1.jpg",
-          price: "$130.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-        {
-          title: "Casa 5",
-          photo: "home2.jpg",
-          price: "300.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-        {
-          title: "Casa 1",
-          photo: "home1.jpg",
-          price: "$100.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-        {
-          title: "Casa 2",
-          photo: "home2.jpg",
-          price: "$250.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-        {
-          title: "Casa 3",
-          photo: "home3.jpg",
-          price: "$80.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-        {
-          title: "Casa 4",
-          photo: "home1.jpg",
-          price: "$130.000",
-          data: "Wifi, se permiten mascotas.",
-        },
-      ],
-    };
+    this.state = {};
   }
 
   goToPublish() {
@@ -99,21 +16,20 @@ class Home extends Component {
   }
 
   goToDetail(info) {
-    console.log(info);
-    // let fecha = new Date();
-    // let data = {
-    //   item: info,
-    // };
+    let fecha = new Date();
+    let data = {
+      item: info,
+    };
 
-    // localStorage.setItem(
-    //   `DP_${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`,
-    //   JSON.stringify(data)
-    // );
+    localStorage.setItem(
+      `DP_${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}`,
+      JSON.stringify(data)
+    );
 
-    // this.props.history.push({
-    //   pathname: "/booking",
-    //   state: data,
-    // });
+    this.props.history.push({
+      pathname: "/booking",
+      state: data,
+    });
   }
 
   render() {
