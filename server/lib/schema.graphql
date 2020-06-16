@@ -25,15 +25,28 @@ type Query {
   getRealStates: [RealState]
   "Devuelve una propiedad"
   getRealState(id:ID!): RealState
+  "Devuelve las opciones"
+  getOptions:[Option]
 }
 
 input RealStateInput {
   title: String!
   price: String
+  photos: [PhotoInput]
+  options: [OptionInput]
+  date_disp: [DisponibilityInput]
 }
 
 input PhotoInput{
   url_foto: String
+}
+
+input OptionInput{
+  name: String
+}
+
+input DisponibilityInput{
+  date: String
 }
 
 type Mutation {
