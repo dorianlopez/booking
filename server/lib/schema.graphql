@@ -20,6 +20,11 @@ type Disponibility {
   date: String
 }
 
+type RspAPI {
+   status: Boolean
+   message: String  
+}
+
 type Query {
   "Devuelve todas las propiedades raices"
   getRealStates: [RealState]
@@ -49,7 +54,17 @@ input DisponibilityInput{
   date: String
 }
 
+input UserInput{
+  email: String!
+  name: String!
+  passwd: String!
+}
+
+
+
 type Mutation {
   "Crea una propiedad"
   createRealState(input: RealStateInput!): RealState
+  "Registrar usuario"
+  signUp(input:UserInput): RspAPI
 }
