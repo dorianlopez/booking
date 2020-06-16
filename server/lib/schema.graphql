@@ -25,6 +25,11 @@ type RspAPI {
    message: String  
 }
 
+type User {
+  email: String
+  name: String
+}
+
 type Query {
   "Devuelve todas las propiedades raices"
   getRealStates: [RealState]
@@ -32,6 +37,8 @@ type Query {
   getRealState(id:ID!): RealState
   "Devuelve las opciones"
   getOptions:[Option]
+  "Login user"
+  signIn(email:String,passwd:String): User
 }
 
 input RealStateInput {

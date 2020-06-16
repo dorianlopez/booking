@@ -1,5 +1,6 @@
 const connectDb = require('./db')
 const { ObjectID } = require('mongodb')
+const utils = require('./utils')
 
 module.exports = {
   getRealStates: async() => {
@@ -31,5 +32,19 @@ module.exports = {
       console.error(error)
     }
     return options
+  }, 
+  signIn: async(root, { email,passwd }) => {
+    let db, user = []
+    let us = {}
+    try{
+      db = await connectDb()
+      user = await db.collection('user').findOne({email})
+      if(user.passwd !== null && utils.validPassword(passwd,user.passwd)){
+        us = {email,name:user.name}
+      }
+    }catch(error){
+      console.error(error)
+    }
+    return us
   }
 }
