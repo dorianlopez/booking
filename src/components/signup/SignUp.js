@@ -114,7 +114,6 @@ class SignUp extends Component {
                         style={styles.form_container}
                         onSubmit={e=>{
                           e.preventDefault();
-                          //signUp({ variables: {input: { name:'Steven', email: 'tevenmoreno@gmail.com',passwd:'12345' } }});
                           this.handleClick(signUp)
                         }}
                       >
