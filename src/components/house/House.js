@@ -1,5 +1,27 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
+import Loader from "../commons/Loader";
+
+const GET_STATES = gql`
+  {
+    getRealStates {
+      _id
+      title
+      price
+      options {
+        name
+      }
+      price
+      photos {
+        url_foto
+      }
+      date_disp {
+        date
+      }
+    }
+  }
+`;
 
 class House extends Component {
   constructor(props) {
@@ -12,25 +34,40 @@ class House extends Component {
   }
 
   render() {
-    return (
-      <div style={styles.house_container}>
-        <div style={styles.image_container}>
-          <img
-            style={styles.photo}
-            src={require(`../../assets/images/${this.props.data.photo}`)}
-          />
-        </div>
+    const StatesQuery = () => {
+      return (
+        <Query query={GET_STATES}>
+          {({ loading, error, data }) => {
+            if (loading) return <Loader />;
+            if (error) return <p>{`Error: ${error}`}</p>;
 
-        <div style={styles.option_container}>
-          <p
-            onClick={() => this.goToDetail(this.props.data)}
-            style={styles.booking}
-          >
-            Reservar
-          </p>
-        </div>
-      </div>
-    );
+            console.log(data);
+
+            return data.getRealStates.map((data) => (
+              <div key={data._id} style={styles.house_container}>
+                <div style={styles.image_container}>
+                  <img
+                    style={styles.photo}
+                    src={require(`../../assets/images/home1.jpg`)}
+                  />
+                </div>
+
+                <div style={styles.option_container}>
+                  <p
+                    onClick={() => this.goToDetail(data._id)}
+                    style={styles.booking}
+                  >
+                    Reservar
+                  </p>
+                </div>
+              </div>
+            ));
+          }}
+        </Query>
+      );
+    };
+
+    return <StatesQuery />;
   }
 }
 
